@@ -7,33 +7,43 @@ let promiseMoney = new Promise(
     }
 )
 
+function check(value, message){
+
+    do{
+        value = prompt(message);
+    }while(!value || value === ``){} 
+    return value;
+}
 promiseMoney    
     .then(
         () => {
-            let amount = prompt(`Enter amount`);
+            let amount;
+            amount = check(amount, `Enter amount`);
             return amount;
-            
         },
         () => {
-            let langauge = prompt(`Choose language for info: Ukrainian, German, English`);
+            let langauge;
+            langauge = check(langauge, `Choose language for info: Ukrainian, German, English`);
             return Promise.reject(langauge);
         }
     )
     .then(
         (amount) => {
-            let currency = prompt(`Choose currency: USD, EUR, UAH`);
+            let currency;
+            currency = check(currency, `Choose currency: USD, EUR, UAH`);
             return {amount, currency};
         },
         (langauge) => {
-            let email = prompt(`Enter email`);
-            return Promise.reject(langauge, email);
+            let email; 
+            email = check(email, `Enter email`);
+            return Promise.reject({langauge, email});
         }
     )
     .then(
-        (amount,currency) => {
-            console.log(`Take ${amount}${currency} please`);
+        ({amount,currency}) => {
+            console.log(`Take ${amount} ${currency} please`);
         },
-        (langauge, email) => {
+        ({langauge, email}) => {
             console.log(`Information about the account was sent to the ${email} in ${langauge}.`);
         }
     )
